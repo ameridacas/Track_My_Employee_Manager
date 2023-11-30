@@ -22,8 +22,54 @@ const db = mysql.createConnection(
   console.log(`Connected to the _db database.`)
 );
 
-// Create employee routes
-router.get('/employees', async (req, res) => {
+// Department routes
+app.get('/api/departments', async (req, res) => {
+  try {
+    const [rows] = await db.promise().query('SELECT * FROM department');
+    res.json(rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+app.post('/api/departments', async (req, res) => {
+  const { name } = req.body;
+
+  try {
+    await db.promise().query('INSERT INTO department (name) VALUES (?)', [name]);
+    res.json({ success: true, message: 'Department created successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Role routes
+app.get('/api/roles', async (req, res) => {
+  try {
+    const [rows] = await db.promise().query('SELECT * FROM role');
+    res.json(rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+app.post('/api/roles', async (req, res) => {
+  const { title, salary, department_id } = req.body;
+
+  try {
+    await db.promise().query('INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)', [title, salary, department_id]);
+    res.json({ success: true, message: 'Role created successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Employee routes
+app.get('/api/employees', async (req, res) => {
   try {
     const [rows] = await db.promise().query('SELECT * FROM employee');
     res.json(rows);
@@ -33,58 +79,12 @@ router.get('/employees', async (req, res) => {
   }
 });
 
-// Get a specific employee by ID
-router.get('/employees/:id', async (req, res) => {
-  const employeeId = req.params.id;
-
-  try {
-    const [rows] = await db.promise().query('SELECT * FROM employee WHERE id = ?', [employeeId]);
-
-    if (rows.length === 0) {
-      res.status(404).json({ error: 'Employee not found' });
-    } else {
-      res.json(rows[0]);
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
-
-// Create a new employee
-router.post('/employees', async (req, res) => {
+app.post('/api/employees', async (req, res) => {
   const { first_name, last_name, role_id, manager_id } = req.body;
 
   try {
     await db.promise().query('INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)', [first_name, last_name, role_id, manager_id]);
     res.json({ success: true, message: 'Employee created successfully' });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
-
-// Update an existing employee
-router.put('/employees/:id', async (req, res) => {
-  const employeeId = req.params.id;
-  const { first_name, last_name, role_id, manager_id } = req.body;
-
-  try {
-    await db.promise().query('UPDATE employee SET first_name = ?, last_name = ?, role_id = ?, manager_id = ? WHERE id = ?', [first_name, last_name, role_id, manager_id, employeeId]);
-    res.json({ success: true, message: 'Employee updated successfully' });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
-
-// Delete an employee
-router.delete('/employees/:id', async (req, res) => {
-  const employeeId = req.params.id;
-
-  try {
-    await db.promise().query('DELETE FROM employee WHERE id = ?', [employeeId]);
-    res.json({ success: true, message: 'Employee deleted successfully' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
