@@ -4,6 +4,12 @@
 
 MySQL_Employee_Tracker
 
+This application is one that uses sql to seed the database based on the created tables and the parameters to get the employee info 
+based on their role data or department info. I followed the sql syntax of creating a schema.sql, query.sql, and seeds.sql 
+to create databases. Each database had their own parameters such as id, title, role, department,etc. for getting the employee 
+from that database. Different routes for getting the employee from their role or department, department with the employees and their roles,
+and based on their role would provide the department and the employees. Additionally things such as remove, update and add are used by routes in the server.js. Im still working on finishing this Application. 
+
 #Mock_UP
 
 ![alt Track_My_Employee_Manager](./assets/images/Track_My_Employee_Manager.gif)
