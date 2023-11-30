@@ -6,7 +6,7 @@ MySQL_Employee_Tracker
 
 #Mock_UP
 
-![alt Track_My_Employee_Manager](./assets/images/Track_My_Employee_Manager.jpeg)
+![alt Track_My_Employee_Manager](./assets/images/Track_My_Employee_Manager.gif)
 
 #Usage
 
